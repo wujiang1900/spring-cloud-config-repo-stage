@@ -1,0 +1,44 @@
+Configuration:
+  status: debug
+
+  Appenders:
+    Console:
+      name: Console
+      PatternLayout:
+        pattern: '[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n'
+
+    RollingFile:
+      name: File
+      fileName: logs/application.log
+      filePattern: 'logs/$${date:yyyy-MM}/application-%d{MM-dd-yyyy}-%i.log.gz'
+      PatternLayout:
+        pattern: '[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n'
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: 10MB
+        DefaultRollOverStrategy:
+          max: 10
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        ref: File
+
+    Logger:
+      name: org.springframework
+      level: debug
+      additivity: false
+      AppenderRef:
+        ref: Console
+    logger:
+      - name: com.optum
+        level: debug
+        additivity: false
+        AppenderRef:
+          ref: File
+      - name: org.springframework
+        level: info
+        additivity: false
+        AppenderRef:
+          ref: File
